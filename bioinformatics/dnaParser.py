@@ -51,8 +51,8 @@ plot_histogram(Counter(''.join(proteins)))
 
 # %%
 proteins = []
-dna = clean_sequence("dna", DNA_CHARS)
-protein = clean_sequence("amino", AMINO_CHARS)
+dna = clean_sequence("data/dna", DNA_CHARS)
+protein = clean_sequence("data/amino", AMINO_CHARS)
 extract_proteins(dna)
 assert(protein == proteins[0])
 
