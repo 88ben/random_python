@@ -2,59 +2,53 @@
 import re
 import matplotlib.pyplot as plt
 import numpy as np
-from pprint import pprint
 from collections import Counter
 
 from constants import *
 
 
-def plot_histogram(freq):
-	plt.bar(freq.keys(), freq.values())
-	plt.show()
+def generate(n):
+	return ''.join(np.random.choice(list(DNA_CHARS), n))
 
-
-def clean_sequence(file, chars):
+def clean(file, chars):
 	with open(file, "r") as f:
 		seq = f.read().upper()
 	return re.sub(f"[^{chars}]+", "", seq)
 
+def crop(dna):
+	start = dna.find(START_CODON)
+	return "" if start == -1 else dna[start:]
 
-def extract_proteins(dna, num=1):
+def codons(dna):
+	return [dna[i:i+3] for i in range(0, len(dna), 3) if len(dna[i:i+3]) == 3]
 
-	if len(dna) == 0: return
+def aminos(codons):
+	return ''.join(np.vectorize(CODONS.get)(codons))
 
-	start = len(dna)
-	for i in range(0, len(dna)):
-		if dna[i:i+3] == START_CODON:
-			start = i
-			break
+def proteins(aminos):
+	record = False
+	proteins = []
+	p = ""
+	for amino in aminos:
+		if amino == START_AMINO: record = True
+		elif amino == STOP_AMINO:
+			if p: proteins.append(p)
+			record = False
+			p = ""
+		if record: p += amino
+	return proteins
 
-	protein = ""
-	for i in range(start, len(dna), 3):
-		codon = dna[i:i+3]
-		if len(codon) < 3: break
-		if codon in STOP_CODONS:
-			proteins.append(protein)
-			if num > 1:
-				extract_proteins(dna[i+3:], num - 1)
-			return
-		protein += CODONS[codon]
+def process(dna):
+	dna = crop(dna)
+	c = codons(dna)
+	a = aminos(c)
+	p = proteins(a)
+	return dna, c, a, p
+
+def frequency(seq):
+	freq = Counter(seq)
+	plt.bar(freq.keys(), freq.values())
+	plt.show()
 
 
-# %%
-proteins = []
-dna = ''.join(np.random.choice(['A','C','G','T'], 5000))
-extract_proteins(dna, 100)
-print(proteins)
-plot_histogram(Counter(''.join(proteins)))
 
-
-# %%
-proteins = []
-dna = clean_sequence("data/dna", DNA_CHARS)
-protein = clean_sequence("data/amino", AMINO_CHARS)
-extract_proteins(dna)
-assert(protein == proteins[0])
-
-plot_histogram(Counter(dna))
-plot_histogram(Counter(protein))
