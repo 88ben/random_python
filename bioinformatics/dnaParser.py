@@ -16,7 +16,8 @@ def generate(n):
 	return ''.join(np.random.choice(list(DNA_CHARS), n))
 
 """
-Open file, remove unwanted characters, all caps
+Removes unwanted chars from file
+FASTA compatible (ignore lines that start with ';' and '>')
 
 @param file: name of file
 @param chars: valid characters (not removed from sequence)
@@ -24,7 +25,7 @@ Open file, remove unwanted characters, all caps
 """
 def clean(file, chars):
 	with open(file, "r") as f:
-		seq = f.read().upper()
+		seq = "".join([line.upper() for line in f if line[0] not in [";",">"]])
 	return re.sub(f"[^{chars}]+", "", seq)
 
 """
@@ -53,7 +54,7 @@ Convert codon list to string of corresponding aminos
 @return: string of aminos
 """
 def aminos(codons):
-	return ''.join(np.vectorize(CODONS.get)(codons))
+	return "".join(np.vectorize(CODONS.get)(codons))
 
 """
 Convert aminos string to list of proteins, discarding invalid aminos between each start/stop amino
