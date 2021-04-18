@@ -6,8 +6,8 @@ numbers = [0,1,2,3]
 nucleotides = '?AcXgtXCgTca'.upper()
 
 for n in nucleotides:
-    if n in count:
-        count[n] += 1
+  if n in count:
+    count[n] += 1
 
 print(count)
 

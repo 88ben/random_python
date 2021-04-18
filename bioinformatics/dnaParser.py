@@ -13,7 +13,7 @@ Generate single strand of random DNA sequence
 @return: randomly generated DNA sequence
 """
 def generate(n):
-	return ''.join(np.random.choice(list(DNA_CHARS), n))
+  return ''.join(np.random.choice(list(DNA_CHARS), n))
 
 """
 Removes unwanted chars from file
@@ -24,9 +24,9 @@ FASTA compatible (ignore lines that start with ';' and '>')
 @return: cleaned sequence (DNA or aminos)
 """
 def clean(file, chars):
-	with open(file, "r") as f:
-		seq = "".join([line.upper() for line in f if line[0] not in [";",">"]])
-	return re.sub(f"[^{chars}]+", "", seq)
+  with open(file, "r") as f:
+    seq = "".join([line.upper() for line in f if line[0] not in [";",">"]])
+  return re.sub(f"[^{chars}]+", "", seq)
 
 """
 Remove nucleotides preceeding the first start codon (ATG)
@@ -35,8 +35,8 @@ Remove nucleotides preceeding the first start codon (ATG)
 @return: DNA sequence, starting with ATG codon
 """
 def crop(dna):
-	start = dna.find(START_CODON)
-	return "" if start == -1 else dna[start:]
+  start = dna.find(START_CODON)
+  return "" if start == -1 else dna[start:]
 
 """
 Convert DNA sequence string into list of codons
@@ -45,7 +45,7 @@ Convert DNA sequence string into list of codons
 @return: codon list
 """
 def codons(dna):
-	return [dna[i:i+3] for i in range(0, len(dna), 3) if len(dna[i:i+3]) == 3]
+  return [dna[i:i+3] for i in range(0, len(dna), 3) if len(dna[i:i+3]) == 3]
 
 """
 Convert codon list to string of corresponding aminos
@@ -54,7 +54,7 @@ Convert codon list to string of corresponding aminos
 @return: string of aminos
 """
 def aminos(codons):
-	return "".join(np.vectorize(CODONS.get)(codons))
+  return "".join(np.vectorize(CODONS.get)(codons))
 
 """
 Convert aminos string to list of proteins, discarding invalid aminos between each start/stop amino
@@ -63,17 +63,17 @@ Convert aminos string to list of proteins, discarding invalid aminos between eac
 @return: list of proteins, discarding terminating codon
 """
 def proteins(aminos):
-	record = False
-	proteins = []
-	p = ""
-	for amino in aminos:
-		if amino == START_AMINO: record = True
-		elif amino == STOP_AMINO:
-			if p: proteins.append(p)
-			record = False
-			p = ""
-		if record: p += amino
-	return proteins
+  record = False
+  proteins = []
+  p = ""
+  for amino in aminos:
+    if amino == START_AMINO: record = True
+    elif amino == STOP_AMINO:
+      if p: proteins.append(p)
+      record = False
+      p = ""
+    if record: p += amino
+  return proteins
 
 """
 Convert DNA directly to proteins and return each intermediate step
@@ -82,11 +82,11 @@ Convert DNA directly to proteins and return each intermediate step
 @return: DNA cropped, codon list, amino string, protein list
 """
 def process(dna):
-	dna = crop(dna)
-	c = codons(dna)
-	a = aminos(c)
-	p = proteins(a)
-	return dna, c, a, p
+  dna = crop(dna)
+  c = codons(dna)
+  a = aminos(c)
+  p = proteins(a)
+  return dna, c, a, p
 
 """
 Plots frequency of elements in string, dictionary, or list
@@ -94,9 +94,9 @@ Plots frequency of elements in string, dictionary, or list
 @param seq: string or dictionary
 """
 def frequency(seq):
-	freq = Counter(seq)
-	plt.bar(freq.keys(), freq.values())
-	plt.show()
+  freq = Counter(seq)
+  plt.bar(freq.keys(), freq.values())
+  plt.show()
 
 
 
