@@ -5,6 +5,8 @@ START_CODON = "ATG"
 START_AMINO = "M"
 STOP_AMINO = "_"
 
+FASTA_TAGS = [";",">"]
+
 CODONS = {
   "AAA":"K", "AAC":"N", "AAG":"K", "AAT":"N",
   "ACA":"T", "ACC":"T", "ACG":"T", "ACT":"T",
