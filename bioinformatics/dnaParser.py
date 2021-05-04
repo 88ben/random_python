@@ -24,7 +24,7 @@ FASTA compatible (ignore lines that start with ';' and '>')
 """
 def clean(file, chars):
   with open(file, "r") as f:
-    seq = "".join([line.upper() for line in f if line[0] not in FASTA_TAGS])
+    seq = "".join([line.upper() for line in f if line.strip()[0] not in FASTA_TAGS])
   return re.sub(f"[^{chars}]+", "", seq)
 
 """
