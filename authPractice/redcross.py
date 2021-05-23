@@ -45,4 +45,3 @@ for email in emails:
 driver.close()
 
 print(records)
-# print(names)
