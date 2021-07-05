@@ -1,11 +1,12 @@
 # %%
 
-from selenium.webdriver import Chrome
-from selenium.webdriver.common.keys import Keys
 import time
 
-from keys import USERNAME, PASSWORD, emails
-from constants import DRIVER_FILE, REDCROSS_SITE, CLASSES
+from selenium.webdriver import Chrome
+from selenium.webdriver.common.keys import Keys
+
+from constants import CLASSES, DRIVER_FILE, REDCROSS_SITE
+from keys import PASSWORD, USERNAME, emails
 
 # EXTRACT EMAILS
 
